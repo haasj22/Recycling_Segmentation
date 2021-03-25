@@ -87,7 +87,7 @@ def main():
   labelled_train = open(os.path.join(OUT_DIR, "labelled_train.txt"), "w+")
   labelled_test = open(os.path.join(OUT_DIR, "labelled_test.txt"), "w+")
 
-  for i in xrange(NUM_TRAIN):
+  for i in range(NUM_TRAIN):
     if i in test_inds:
       file = labelled_test
     elif i in indices_with_gt:
@@ -124,8 +124,8 @@ def split_and_save_imgs(img, next_index, names, cut, rescale, dir):
   assert h % cut == 0
 
   offset = 0
-  for i_h in xrange(num_blocks):
-    for i_w in xrange(num_blocks):
+  for i_h in range(num_blocks):
+    for i_w in range(num_blocks):
       start_h = i_h * cut
       start_w = i_w * cut
       img_curr = img[start_h:(start_h + cut), start_w:(start_w + cut), :]
@@ -151,8 +151,8 @@ def split_and_save_gts(gt, next_index, names, cut, rescale, dir):
   h, w, c = gt.shape
   flat_gt = np.zeros((h, w), dtype=np.int32)
   assert (c == 3)
-  for y in xrange(h):
-    for x in xrange(w):
+  for y in range(h):
+    for x in range(w):
       colour = str(list(gt[y, x]))
       gt_c = colour_dict[colour]
       flat_gt[y, x] = gt_c
@@ -173,8 +173,8 @@ def split_and_save_gts(gt, next_index, names, cut, rescale, dir):
   assert h % cut == 0
 
   offset = 0
-  for i_h in xrange(num_blocks):
-    for i_w in xrange(num_blocks):
+  for i_h in range(num_blocks):
+    for i_w in range(num_blocks):
       start_h = i_h * cut
       start_w = i_w * cut
       flat_gt_curr = flat_gt[start_h:(start_h + cut), start_w:(start_w + cut)]

@@ -1,9 +1,9 @@
 import torch.nn as nn
 
-from code.archs.cluster.net5g import ClusterNet5gTrunk
-from code.archs.cluster.net6c import ClusterNet6c, ClusterNet6cTrunk
-from code.archs.cluster.residual import BasicBlock, ResNet
-from code.archs.cluster.vgg import VGGNet
+from IIC.code.archs.cluster.net5g import ClusterNet5gTrunk
+from IIC.code.archs.cluster.net6c import ClusterNet6c, ClusterNet6cTrunk
+from IIC.code.archs.cluster.residual import BasicBlock, ResNet
+from IIC.code.archs.cluster.vgg import VGGNet
 
 __all__ = ["TripletsNet5g", "TripletsNet6c"]
 

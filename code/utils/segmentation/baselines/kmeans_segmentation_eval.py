@@ -5,8 +5,8 @@ import numpy as np
 import torch
 from sklearn.cluster import MiniBatchKMeans
 
-from code.utils.cluster.eval_metrics import _hungarian_match, _acc, _nmi, _ari
-from code.utils.cluster.transforms import sobel_process
+from IIC.code.utils.cluster.eval_metrics import _hungarian_match, _acc, _nmi, _ari
+from IIC.code.utils.cluster.transforms import sobel_process
 
 GET_NMI_ARI = False
 
@@ -181,7 +181,7 @@ def apply_trained_kmeans(config, net, test_dataloader, kmeans):
     nmi, ari = -1., -1.
 
   reordered_masses = np.zeros(config.gt_k)
-  for c in xrange(config.gt_k):
+  for c in range(config.gt_k):
     reordered_masses[c] = float(
       (reordered_preds == c).sum()) / actual_num_unmasked
 

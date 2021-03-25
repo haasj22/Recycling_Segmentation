@@ -7,9 +7,9 @@ from datetime import datetime
 import numpy as np
 import torch
 
-from .IID_losses import IID_loss
-from .eval_metrics import _hungarian_match, _original_match, _acc
-from .transforms import sobel_process
+from IIC.code.utils.cluster.IID_losses import IID_loss
+from IIC.code.utils.cluster.eval_metrics import _hungarian_match, _original_match, _acc
+from IIC.code.utils.cluster.transforms import sobel_process
 
 
 def _clustering_get_data(config, net, dataloader, sobel=False,

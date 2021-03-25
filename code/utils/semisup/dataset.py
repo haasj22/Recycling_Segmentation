@@ -1,7 +1,7 @@
 from torch.utils.data.dataset import Dataset
 from torchvision import transforms
 
-from code.utils.cluster.transforms import custom_greyscale_to_tensor
+from IIC.code.utils.cluster.transforms import custom_greyscale_to_tensor
 
 
 class TenCropAndFinish(Dataset):

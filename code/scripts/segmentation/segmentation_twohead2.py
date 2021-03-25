@@ -24,14 +24,14 @@ from IIC.code.utils.segmentation.IID_losses import IID_segmentation_loss, \
   IID_segmentation_loss_uncollapsed
 from IIC.code.utils.segmentation.data import segmentation_create_dataloaders
 from IIC.code.utils.segmentation.general import set_segmentation_input_channels
-import dataloading
-
+from IIC.code.scripts.segmentation.dataloading import create_Recycling_Dataloaders
+from IIC.code.scripts.segmentation.new_dataloading import create_basic_clustering_dataloaders
 """
   Fully unsupervised clustering for segmentation ("IIC" = "IID").
   Train and test script.
   Network has two heads, for overclustering and final clustering.
 """
-
+print("IN")
 # Options ----------------------------------------------------------------------
 
 parser = argparse.ArgumentParser()
@@ -75,7 +75,7 @@ parser.add_argument("--num_dataloaders", type=int, default=3)
 parser.add_argument("--num_sub_heads", type=int, default=5)
 
 parser.add_argument("--out_root", type=str,
-                    default="/scratch/shared/slow/xuji/iid_private")
+                    default="/mnt/storage2/METRO_recycling/segmented_johns_image_xu")
 parser.add_argument("--restart", default=False, action="store_true")
 
 parser.add_argument("--save_freq", type=int, default=5)
@@ -121,6 +121,10 @@ parser.add_argument("--aff_max_scale", type=float, default=1.2)
 parser.add_argument("--half_T_side_dense", type=int, default=0)
 parser.add_argument("--half_T_side_sparse_min", type=int, default=0)
 parser.add_argument("--half_T_side_sparse_max", type=int, default=0)
+
+parser.add_argument("--crop_orig", dest="crop_orig", default=False)
+parser.add_argument("--fluid_warp", dest="fluid_warp", default=False)
+parser.add_argument("--rand_crop_sys_tf", type=int, nargs="+", default=[])
 
 config = parser.parse_args()
 
@@ -210,7 +214,7 @@ def train():
 
     config.epoch_loss_head_B = []
     config.epoch_loss_no_lamb_head_B = []
-
+    """
     _ = segmentation_eval(config, net,
                           mapping_assignment_dataloader=mapping_assignment_dataloader,
                           mapping_test_dataloader=mapping_test_dataloader,
@@ -220,6 +224,7 @@ def train():
     print(
       "Pre: time %s: \n %s" % (datetime.now(), nice(config.epoch_stats[-1])))
     sys.stdout.flush()
+    """
     next_epoch = 1
 
   fig, axarr = plt.subplots(6, sharex=False, figsize=(20, 20))
@@ -234,7 +239,7 @@ def train():
   # Train
   # ------------------------------------------------------------------------
 
-  for e_i in xrange(next_epoch, config.num_epochs):
+  for e_i in range(next_epoch, config.num_epochs):
     print("Starting e_i: %d %s" % (e_i, datetime.now()))
     sys.stdout.flush()
 
@@ -254,14 +259,18 @@ def train():
         epoch_loss = config.epoch_loss_head_B
         epoch_loss_no_lamb = config.epoch_loss_no_lamb_head_B
         lamb = config.lamb_B
-
-      iterators = (d for d in dataloaders)
+    
+      
+      iterators = tuple(d for d in dataloaders)
+      if(iterators == None):
+          print("No iterators")
       b_i = 0
       avg_loss = 0.  # over heads and head_epochs (and sub_heads)
       avg_loss_no_lamb = 0.
       avg_loss_count = 0
 
-      for tup in itertools.izip(*iterators):
+      for tup in zip(iterators):
+        print("Tuple:" + str(tup))
         net.module.zero_grad()
 
         if not config.no_sobel:
@@ -280,8 +289,13 @@ def train():
         all_mask_img1 = torch.zeros(config.batch_sz, config.input_sz,
                                     config.input_sz).to(torch.float32).cuda()
 
-        curr_batch_sz = tup[0][0].shape[0]
-        for d_i in xrange(config.num_dataloaders):
+        iterator = iter(tup)
+        print("Iterator" + str(iterator))
+        X, Y = next(iterator)
+        print("Batch" + str(X))
+        curr_batch_sz = X.shape[0]
+        for d_i in range(config.num_dataloaders):
+          print("Failing shape:" + str(len(tup[d_i])))
           img1, img2, affine2_to_1, mask_img1 = tup[d_i]
           assert (img1.shape[0] == curr_batch_sz)
 
@@ -316,7 +330,7 @@ def train():
         avg_loss_batch = None  # avg over the heads
         avg_loss_no_lamb_batch = None
 
-        for i in xrange(config.num_sub_heads):
+        for i in range(config.num_sub_heads):
           loss, loss_no_lamb = loss_fn(x1_outs[i],
                                        x2_outs[i],
                                        all_affine2_to_1=all_affine2_to_1,
@@ -370,18 +384,20 @@ def train():
 
     # Eval
     # -----------------------------------------------------------------------
-
+    """
     is_best = segmentation_eval(config, net,
                                 mapping_assignment_dataloader=mapping_assignment_dataloader,
                                 mapping_test_dataloader=mapping_test_dataloader,
                                 sobel=(
                                   not config.no_sobel),
                                 using_IR=config.using_IR)
-
+    """
+    is_best=None
+    """
     print(
       "Pre: time %s: \n %s" % (datetime.now(), nice(config.epoch_stats[-1])))
     sys.stdout.flush()
-
+    """
     axarr[0].clear()
     axarr[0].plot(config.epoch_acc)
     axarr[0].set_title("acc (best), top: %f" % max(config.epoch_acc))

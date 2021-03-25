@@ -16,10 +16,10 @@ import torchvision.transforms as tvt
 from PIL import Image
 from torch.utils import data
 
-from util import cocostuff_fine_to_coarse
-from .util.cocostuff_fine_to_coarse import generate_fine_to_coarse
-from ...utils.segmentation.render import render
-from ...utils.segmentation.transforms import \
+from IIC.code.datasets.segmentation.util import cocostuff_fine_to_coarse
+from IIC.code.datasets.segmentation.util.cocostuff_fine_to_coarse import generate_fine_to_coarse
+from IIC.code.utils.segmentation.render import render
+from IIC.code.utils.segmentation.transforms import \
   pad_and_or_crop, random_affine, custom_greyscale_numpy
 
 __all__ = ["Coco10kFull", "Coco10kFew", "Coco164kFull", "Coco164kFew",
@@ -91,23 +91,24 @@ class _Coco(data.Dataset):
     self.files = []
     self.images = []
     self.labels = []
-
+    
+    """
     if not osp.exists(config.fine_to_coarse_dict):
       generate_fine_to_coarse(config.fine_to_coarse_dict)
 
     with open(config.fine_to_coarse_dict, "rb") as dict_f:
       d = pickle.load(dict_f)
       self._fine_to_coarse_dict = d["fine_index_to_coarse_index"]
-
+    """
     cv2.setNumThreads(0)
 
   def _prepare_train(self, index, img, label):
     # This returns gpu tensors.
     # label is passed in canonical [0 ... 181] indexing
 
-    assert (img.shape[:2] == label.shape)
+    #assert (img.shape[:2] == label.shape)
     img = img.astype(np.float32)
-    label = label.astype(np.int32)
+    #label = label.astype(np.int32)
 
     # shrink original images, for memory purposes, otherwise no point
     if self.pre_scale_all:
@@ -115,9 +116,9 @@ class _Coco(data.Dataset):
       img = cv2.resize(img, dsize=None, fx=self.pre_scale_factor,
                        fy=self.pre_scale_factor,
                        interpolation=cv2.INTER_LINEAR)
-      label = cv2.resize(label, dsize=None, fx=self.pre_scale_factor,
-                         fy=self.pre_scale_factor,
-                         interpolation=cv2.INTER_NEAREST)
+      #label = cv2.resize(label, dsize=None, fx=self.pre_scale_factor,
+      #                   fy=self.pre_scale_factor,
+      #                   interpolation=cv2.INTER_NEAREST)
 
     # basic augmentation transforms for both img1 and img2
     if self.use_random_scale:
@@ -126,19 +127,19 @@ class _Coco(data.Dataset):
                      self.scale_min
       img = cv2.resize(img, dsize=None, fx=scale_factor, fy=scale_factor,
                        interpolation=cv2.INTER_LINEAR)
-      label = cv2.resize(label, dsize=None, fx=scale_factor, fy=scale_factor,
-                         interpolation=cv2.INTER_NEAREST)
+      #label = cv2.resize(label, dsize=None, fx=scale_factor, fy=scale_factor,
+      #                   interpolation=cv2.INTER_NEAREST)
 
     # random crop to input sz
     img, coords = pad_and_or_crop(img, self.input_sz, mode="random")
-    label, _ = pad_and_or_crop(label, self.input_sz, mode="fixed",
-                               coords=coords)
+    #label, _ = pad_and_or_crop(label, self.input_sz, mode="fixed",
+    #                           coords=coords)
 
-    _, mask_img1 = self._filter_label(label)
+    #_, mask_img1 = self._filter_label(label)
     # uint8 tensor as masks should be binary, also for consistency with
     # prepare_train, but converted to float32 in main loop because is used
     # multiplicatively in loss
-    mask_img1 = torch.from_numpy(mask_img1.astype(np.uint8)).cuda()
+    #mask_img1 = torch.from_numpy(mask_img1.astype(np.uint8)).cuda()
 
     # make img2 different from img1 (img)
 
@@ -224,9 +225,9 @@ class _Coco(data.Dataset):
       render(img2, mode="image", name=("train_data_img2_%d" % index))
       render(affine2_to_1, mode="matrix",
              name=("train_data_affine2to1_%d" % index))
-      render(mask_img1, mode="mask", name=("train_data_mask_%d" % index))
+      #irender(mask_img1, mode="mask", name=("train_data_mask_%d" % index))
 
-    return img1, img2, affine2_to_1, mask_img1
+    return img1, img2, affine2_to_1, None
 
   def _prepare_train_single(self, index, img, label):
     # Returns one pair only, i.e. without transformed second image.
@@ -579,7 +580,20 @@ class _Coco164kCuratedFull(_Coco):
 
 # ------------------------------------------------------------------------------
 # Handles Full vs Few
+"""
+class _ResearchImages(_Coco):
+    def __init__(self, **kwargs):
+        super(_ResearchImages, self).init(**kwargs)
+        self.-set_files()
 
+    def _set_files(self);
+
+    def _load_data(self, image_id):
+        image_path = osp.join(self.root, "johns_images_for_IIC/", image_id + ".png")        
+        image = cv2.imread(image_path, cv2.IMREAD_COLOR).astype(np.uint8)
+
+        return image, -1
+"""
 class _CocoFull(_Coco):
   """ 
   This contains methods for the following datasets 
@@ -609,7 +623,7 @@ class _CocoFull(_Coco):
     new_label_map = np.zeros(label_map.shape, dtype=label_map.dtype)
 
     # -1 stays -1
-    for c in xrange(182):
+    for c in range(182):
       new_label_map[label_map == c] = self._fine_to_coarse_dict[c]
 
     return new_label_map
@@ -706,7 +720,7 @@ class _CocoFew(_Coco):
 
     # excludes -1 (fine - see usage in filter label - as with Coco10kFull)
     _fine_to_few_dict = {}
-    for c in xrange(182):
+    for c in range(182):
       orig_coarse_ind = self._fine_to_coarse_dict[c]
       if orig_coarse_ind in self.label_orig_coarse_inds:
         new_few_ind = self.label_orig_coarse_inds.index(orig_coarse_ind)
@@ -751,7 +765,7 @@ class _CocoFew(_Coco):
     # -1 stays -1
     new_label_map = np.zeros(label.shape, dtype=label.dtype)
 
-    for c in xrange(182):
+    for c in range(182):
       new_label_map[label == c] = self._fine_to_few_dict[c]
 
     mask = (new_label_map >= 0)

@@ -3,8 +3,8 @@ from sys import float_info
 import torch
 import torch.nn.functional as F
 
-from .render import render
-from .transforms import perform_affine_tf, random_translation_multiple
+from IIC.code.utils.segmentation.render import render
+from IIC.code.utils.segmentation.transforms import perform_affine_tf, random_translation_multiple
 
 EPS = float_info.epsilon
 

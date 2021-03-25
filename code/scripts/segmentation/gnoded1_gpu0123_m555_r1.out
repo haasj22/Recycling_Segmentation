@@ -1,0 +1,100 @@
+IN
+Given config: Config: -----
+model_ind: 555
+arch: SegmentationNet10aTwoHead
+opt: Adam
+mode: IID
+dataset: Coco164kCuratedFew
+dataset_root: /mnt/storage2/METRO_recycling
+use_coarse_labels: True
+fine_to_coarse_dict: /users/xuji/iid/iid_private/code/datasets/segmentation/util/out/fine_to_coarse_dict.pickle
+include_things_labels: False
+incl_animal_things: False
+coco_164k_curated_version: 6
+gt_k: 3
+output_k_A: 15
+output_k_B: 3
+lamb_A: 1.0
+lamb_B: 1.5
+lr: 0.0001
+lr_schedule: []
+lr_mult: 0.1
+use_uncollapsed_loss: True
+mask_input: False
+num_epochs: 4800
+batch_sz: 120
+num_dataloaders: 1
+num_sub_heads: 1
+out_root: /mnt/storage2/METRO_recycling/segmented_johns_image_xu
+restart: False
+save_freq: 5
+test_code: False
+head_B_first: False
+batchnorm_track: True
+no_sobel: False
+include_rgb: True
+pre_scale_all: False
+pre_scale_factor: 0.5
+input_sz: 128
+use_random_scale: False
+scale_min: 0.6
+scale_max: 1.4
+jitter_brightness: 0.4
+jitter_contrast: 0.4
+jitter_saturation: 0.4
+jitter_hue: 0.125
+flip_p: 0.5
+use_random_affine: False
+aff_min_rot: -30.0
+aff_max_rot: 30.0
+aff_min_shear: -10.0
+aff_max_shear: 10.0
+aff_min_scale: 0.8
+aff_max_scale: 1.2
+half_T_side_dense: 10
+half_T_side_sparse_min: 0
+half_T_side_sparse_max: 0
+crop_orig: False
+fluid_warp: False
+rand_crop_sys_tf: []
+out_dir: /mnt/storage2/METRO_recycling/segmented_johns_image_xu/555
+dataloader_batch_sz: 120
+output_k: 3
+use_doersch_datasets: False
+eval_mode: hung
+in_channels: 5
+using_IR: False
+----------
+Creating paired dataloader 0 out of 1 time 2021-03-25 18:21:57.546999
+Train Images List: [<IIC.code.scripts.segmentation.dataloading._RecyclingDataset object at 0x7f34522d6fa0>, <IIC.code.scripts.segmentation.dataloading._RecyclingDataset object at 0x7f34522d6f70>]
+Train Images: <torch.utils.data.dataset.ConcatDataset object at 0x7f34522d6fd0>
+Length of paired datasets vector 1
+Number of batches per epoch: 35
+using uncollapsed loss!
+Starting e_i: 1 2021-03-25 18:22:03.719643
+/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:18: FutureWarning: The linear_assignment_ module is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/runpy.py", line 185, in _run_module_as_main
+    mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/runpy.py", line 111, in _get_module_details
+    __import__(pkg_name)
+  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 460, in <module>
+    train()
+  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 294, in train
+    X, Y = next(iterator)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 435, in __next__
+    data = self._next_data()
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 475, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 47, in fetch
+    return self.collate_fn(data)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 83, in default_collate
+    return [default_collate(samples) for samples in transposed]
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 83, in <listcomp>
+    return [default_collate(samples) for samples in transposed]
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 85, in default_collate
+    raise TypeError(default_collate_err_msg_format.format(elem_type))
+TypeError: default_collate: batch must contain tensors, numpy arrays, numbers, dicts or lists; found <class 'NoneType'>
+Tuple:(<torch.utils.data.dataloader.DataLoader object at 0x7f34522d6df0>,)
+Iterator<tuple_iterator object at 0x7f3452040bb0>

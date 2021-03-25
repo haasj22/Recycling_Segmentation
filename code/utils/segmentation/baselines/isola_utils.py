@@ -5,7 +5,7 @@ import numpy as np
 import numpy.random as random
 import torch
 
-from .general import pol2cart
+from IIC.code.utils.segmentation.baselines.general import pol2cart
 
 
 def isola_loss(adjacent_pred, centre, other, adjacent_gt, mask, verbose=False,

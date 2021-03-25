@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 
-from .general import pol2cart
+from IIC.code.utils.segmentation.baselines.general import pol2cart
 
 
 def doersch_set_patches(input_sz, patch_side):

@@ -104,7 +104,7 @@ def fine_from_coarse(coarse_list):
 
   # 182 class inds, [0, 181] canonical fine indexing
   # (255 means unlabelled in 164k)
-  for fine in xrange(182):
+  for fine in range(182):
     coarse = _fine_to_coarse_dict[fine]
     if coarse in coarse_list:
       fine_list.append(fine)

@@ -12,8 +12,8 @@ from PIL import Image
 from torch.utils import data
 from tqdm import tqdm
 
-from ...utils.segmentation.render import render
-from ...utils.segmentation.transforms import \
+from IIC.code.utils.segmentation.render import render
+from IIC.code.utils.segmentation.transforms import \
   pad_and_or_crop, random_affine, custom_greyscale_numpy
 
 __all__ = ["Potsdam"]
@@ -430,7 +430,7 @@ class Potsdam(_Potsdam):
     if self.use_coarse_labels:
       new_label_map = np.zeros(label.shape, dtype=label.dtype)
 
-      for c in xrange(6):
+      for c in range(6):
         new_label_map[label == c] = self._fine_to_coarse_dict[c]
 
       return new_label_map

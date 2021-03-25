@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.cluster import KMeans
 
-from .cluster_eval import _acc, _original_match, _hungarian_match
+from IIC.code.utils.cluster_eval import _acc, _original_match, _hungarian_match
 
 
 def multioutput_k_means_assess(config, x_outs_all, targets, verbose=0):

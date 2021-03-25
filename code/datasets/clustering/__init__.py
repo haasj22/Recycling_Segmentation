@@ -1,1 +1,1 @@
-from truncated_dataset import *
+from IIC.code.datasets.clustering.truncated_dataset import *

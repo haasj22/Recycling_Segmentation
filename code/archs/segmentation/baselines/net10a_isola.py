@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from code.archs.cluster.vgg import VGGNet
-from code.archs.segmentation.net10a import SegmentationNet10aTrunk, \
+from IIC.code.archs.cluster.vgg import VGGNet
+from IIC.code.archs.segmentation.net10a import SegmentationNet10aTrunk, \
   SegmentationNet10a
-from code.utils.segmentation.baselines.general import get_patches
+from IIC.code.utils.segmentation.baselines.general import get_patches
 
 __all__ = ["SegmentationNet10aIsola"]
 
@@ -62,8 +62,8 @@ class IsolaHead(nn.Module):
                                       self.patch_side))):
       print (ni, k, h, w)
       print (ni2, k2, h2, w2)
-      print patches1.size()
-      print patches2.size()
+      print (patches1.size())
+      print (patches2.size())
       print (ni3, nf)
       assert (False)
 

@@ -1,3 +1,3 @@
-from cluster import *
-from segmentation import *
-from semisup import *
+from IIC.code.archs.cluster import *
+from IIC.code.archs.segmentation import *
+from IIC.code.archs.semisup import *

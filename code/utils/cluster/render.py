@@ -6,7 +6,7 @@ import numpy as np
 import torch
 from PIL import Image
 
-from code.utils.cluster.cluster_eval import _get_assignment_data_matches, \
+from IIC.code.utils.cluster.cluster_eval import _get_assignment_data_matches, \
   _clustering_get_data
 
 # for all heads/models, keep the colouring consistent

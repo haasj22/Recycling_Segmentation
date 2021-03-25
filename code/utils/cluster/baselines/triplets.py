@@ -4,12 +4,12 @@ import torch.nn.functional as F
 import torchvision
 from sklearn.cluster import KMeans
 
-from code.utils.cluster.data import _cifar100_to_cifar20, \
+from IIC.code.utils.cluster.data import _cifar100_to_cifar20, \
   _create_dataloaders, _create_mapping_loader
-from code.utils.cluster.eval_metrics import _hungarian_match, _acc
-from code.utils.cluster.transforms import sobel_make_transforms, \
+from IIC.code.utils.cluster.eval_metrics import _hungarian_match, _acc
+from IIC.code.utils.cluster.transforms import sobel_make_transforms, \
   greyscale_make_transforms
-from code.utils.cluster.transforms import sobel_process
+from IIC.code.utils.cluster.transforms import sobel_process
 
 
 def make_triplets_data(config):

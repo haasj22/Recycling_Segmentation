@@ -1,7 +1,7 @@
 import torch.nn as nn
 
-from net6c import ClusterNet6c, ClusterNet6cTrunk
-from vgg import VGGNet
+from IIC.code.archs.cluster.net6c import ClusterNet6c, ClusterNet6cTrunk
+from IIC.code.archs.cluster.vgg import VGGNet
 
 __all__ = ["ClusterNet6cTwoHead"]
 

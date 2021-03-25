@@ -4,9 +4,10 @@ from datetime import datetime
 import torch
 from torch.utils.data import ConcatDataset
 
-from code.datasets.segmentation import DoerschDataset
-from code.datasets.segmentation import cocostuff
-from code.datasets.segmentation import potsdam
+from IIC.code.datasets.segmentation import DoerschDataset
+from IIC.code.datasets.segmentation import cocostuff
+from IIC.code.datasets.segmentation import potsdam
+from IIC.code.scripts.segmentation.dataloading import _RecyclingDataset 
 
 
 def segmentation_create_dataloaders(config):
@@ -88,14 +89,14 @@ def _create_dataloaders(config, dataset_class):
   # need the matrix relation between them
   dataloaders = []
   do_shuffle = (config.num_dataloaders == 1)
-  for d_i in xrange(config.num_dataloaders):
+  for d_i in range(config.num_dataloaders):
     print("Creating paired dataloader %d out of %d time %s" %
           (d_i, config.num_dataloaders, datetime.now()))
     sys.stdout.flush()
 
     train_imgs_list = []
     for train_partition in config.train_partitions:
-      train_imgs_curr = dataset_class(
+      train_imgs_curr = _RecyclingDataset(
         **{"config": config,
            "split": train_partition,
            "purpose": "train"}  # return training tuples, not including labels
@@ -104,9 +105,9 @@ def _create_dataloaders(config, dataset_class):
         train_imgs_curr = DoerschDataset(config, train_imgs_curr)
 
       train_imgs_list.append(train_imgs_curr)
-
+    print("Train Images List: " + str(train_imgs_list))
     train_imgs = ConcatDataset(train_imgs_list)
-
+    print("Train Images: " + str(train_imgs))
     train_dataloader = torch.utils.data.DataLoader(train_imgs,
                                                    batch_size=config.dataloader_batch_sz,
                                                    shuffle=do_shuffle,
@@ -129,7 +130,7 @@ def _create_dataloaders(config, dataset_class):
 def _create_mapping_loader(config, dataset_class, partitions):
   imgs_list = []
   for partition in partitions:
-    imgs_curr = dataset_class(
+    imgs_curr = _RecyclingDataset(
       **{"config": config,
          "split": partition,
          "purpose": "test"}  # return testing tuples, image and label

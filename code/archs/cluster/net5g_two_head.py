@@ -1,7 +1,7 @@
 import torch.nn as nn
 
-from net5g import ClusterNet5gTrunk
-from residual import BasicBlock, ResNet
+from IIC.code.archs.cluster.net5g import ClusterNet5gTrunk
+from IIC.code.archs.cluster.residual import BasicBlock, ResNet
 
 # resnet34 and full channels
 
