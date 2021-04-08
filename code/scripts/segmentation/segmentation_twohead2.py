@@ -24,7 +24,6 @@ from IIC.code.utils.segmentation.IID_losses import IID_segmentation_loss, \
   IID_segmentation_loss_uncollapsed
 from IIC.code.utils.segmentation.data import segmentation_create_dataloaders
 from IIC.code.utils.segmentation.general import set_segmentation_input_channels
-from IIC.code.scripts.segmentation.dataloading import create_Recycling_Dataloaders
 from IIC.code.scripts.segmentation.new_dataloading import create_basic_clustering_dataloaders
 """
   Fully unsupervised clustering for segmentation ("IIC" = "IID").
@@ -166,8 +165,7 @@ else:
 # Model ------------------------------------------------------
 
 def train():
-  dataloaders_head_A, mapping_assignment_dataloader, mapping_test_dataloader = \
-    segmentation_create_dataloaders(config)
+  dataloaders_head_A, mapping_assignment_dataloader, mapping_test_dataloader = segmentation_create_dataloaders(config)
   dataloaders_head_B = dataloaders_head_A  # unlike for clustering datasets
 
   net = archs.__dict__[config.arch](config)
@@ -261,7 +259,7 @@ def train():
         lamb = config.lamb_B
     
       
-      iterators = tuple(d for d in dataloaders)
+      iterators = (d for d in dataloaders)
       if(iterators == None):
           print("No iterators")
       b_i = 0
@@ -269,8 +267,7 @@ def train():
       avg_loss_no_lamb = 0.
       avg_loss_count = 0
 
-      for tup in zip(iterators):
-        print("Tuple:" + str(tup))
+      for tup in zip(*iterators):
         net.module.zero_grad()
 
         if not config.no_sobel:
@@ -289,14 +286,23 @@ def train():
         all_mask_img1 = torch.zeros(config.batch_sz, config.input_sz,
                                     config.input_sz).to(torch.float32).cuda()
 
-        iterator = iter(tup)
-        print("Iterator" + str(iterator))
-        X, Y = next(iterator)
-        print("Batch" + str(X))
-        curr_batch_sz = X.shape[0]
+        #iterator = iter(tup)
+        print("Batch exammple size: " + str(tup[0][0].shape))
+        curr_batch_sz = 20  #hard_coded to get working
         for d_i in range(config.num_dataloaders):
-          print("Failing shape:" + str(len(tup[d_i])))
-          img1, img2, affine2_to_1, mask_img1 = tup[d_i]
+          #img1 = [[]]
+          #img2 = [[]]
+          affine2_to_1 = [[]]
+          mask_img1 = [[]]
+          """
+          for (batch_idx, batch) in enumerate(tup[d_i]):
+            print("Failing shape:" + str(len(tup[d_i])))
+            print("Img1" + str(img1))
+            print("First batch: " + str(batch[0]))
+            np.append(img1, [batch[0]], axis=1)
+            np.append(img2, [batch[1]], axis=1)
+          """
+          img1, img2 = tup[d_i]
           assert (img1.shape[0] == curr_batch_sz)
 
           actual_batch_start = d_i * curr_batch_sz
@@ -304,9 +310,8 @@ def train():
 
           all_img1[actual_batch_start:actual_batch_end, :, :, :] = img1
           all_img2[actual_batch_start:actual_batch_end, :, :, :] = img2
-          all_affine2_to_1[actual_batch_start:actual_batch_end, :,
-          :] = affine2_to_1
-          all_mask_img1[actual_batch_start:actual_batch_end, :, :] = mask_img1
+          #all_affine2_to_1[actual_batch_start:actual_batch_end, :, :] = affine2_to_1
+          #all_mask_img1[actual_batch_start:actual_batch_end, :, :] = mask_img1
 
         if not (curr_batch_sz == config.dataloader_batch_sz) and (
             e_i == next_epoch):
@@ -315,8 +320,8 @@ def train():
         curr_total_batch_sz = curr_batch_sz * config.num_dataloaders  # times 2
         all_img1 = all_img1[:curr_total_batch_sz, :, :, :]
         all_img2 = all_img2[:curr_total_batch_sz, :, :, :]
-        all_affine2_to_1 = all_affine2_to_1[:curr_total_batch_sz, :, :]
-        all_mask_img1 = all_mask_img1[:curr_total_batch_sz, :, :]
+        #all_affine2_to_1 = all_affine2_to_1[:curr_total_batch_sz, :, :]
+        #all_mask_img1 = all_mask_img1[:curr_total_batch_sz, :, :]
 
         if (not config.no_sobel):
           all_img1 = sobel_process(all_img1, config.include_rgb,
@@ -324,11 +329,19 @@ def train():
           all_img2 = sobel_process(all_img2, config.include_rgb,
                                    using_IR=config.using_IR)
 
+        print("x1.size: " + str(all_img1.shape))
+        print("x2 size: " + str(all_img2.shape))
         x1_outs = net(all_img1, head=head)
+        torch.cuda.empty_cache()
         x2_outs = net(all_img2, head=head)
+        torch.cuda.empty_cache()
 
         avg_loss_batch = None  # avg over the heads
         avg_loss_no_lamb_batch = None
+        
+        #variables added for recycling purposes
+        all_affine2_to_1=None;
+        all_mask_img1=None;
 
         for i in range(config.num_sub_heads):
           loss, loss_no_lamb = loss_fn(x1_outs[i],

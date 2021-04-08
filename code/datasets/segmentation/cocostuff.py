@@ -227,7 +227,7 @@ class _Coco(data.Dataset):
              name=("train_data_affine2to1_%d" % index))
       #irender(mask_img1, mode="mask", name=("train_data_mask_%d" % index))
 
-    return img1, img2, affine2_to_1, None
+    return img1, img2
 
   def _prepare_train_single(self, index, img, label):
     # Returns one pair only, i.e. without transformed second image.

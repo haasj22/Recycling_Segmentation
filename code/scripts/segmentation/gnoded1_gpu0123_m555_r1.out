@@ -22,7 +22,7 @@ lr_mult: 0.1
 use_uncollapsed_loss: True
 mask_input: False
 num_epochs: 4800
-batch_sz: 120
+batch_sz: 20
 num_dataloaders: 1
 num_sub_heads: 1
 out_root: /mnt/storage2/METRO_recycling/segmented_johns_image_xu
@@ -35,7 +35,7 @@ no_sobel: False
 include_rgb: True
 pre_scale_all: False
 pre_scale_factor: 0.5
-input_sz: 128
+input_sz: 576
 use_random_scale: False
 scale_min: 0.6
 scale_max: 1.4
@@ -58,20 +58,20 @@ crop_orig: False
 fluid_warp: False
 rand_crop_sys_tf: []
 out_dir: /mnt/storage2/METRO_recycling/segmented_johns_image_xu/555
-dataloader_batch_sz: 120
+dataloader_batch_sz: 20
 output_k: 3
 use_doersch_datasets: False
 eval_mode: hung
 in_channels: 5
 using_IR: False
 ----------
-Creating paired dataloader 0 out of 1 time 2021-03-25 18:21:57.546999
-Train Images List: [<IIC.code.scripts.segmentation.dataloading._RecyclingDataset object at 0x7f34522d6fa0>, <IIC.code.scripts.segmentation.dataloading._RecyclingDataset object at 0x7f34522d6f70>]
-Train Images: <torch.utils.data.dataset.ConcatDataset object at 0x7f34522d6fd0>
+Creating paired dataloader 0 out of 1 time 2021-04-08 17:31:06.301804
+Test img119
+Test img119
 Length of paired datasets vector 1
-Number of batches per epoch: 35
+Number of batches per epoch: 12
 using uncollapsed loss!
-Starting e_i: 1 2021-03-25 18:22:03.719643
+Starting e_i: 1 2021-04-08 17:31:12.349925
 /mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:18: FutureWarning: The linear_assignment_ module is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
   warnings.warn(
 Traceback (most recent call last):
@@ -79,22 +79,84 @@ Traceback (most recent call last):
     mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
   File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/runpy.py", line 111, in _get_module_details
     __import__(pkg_name)
-  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 460, in <module>
+  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 473, in <module>
     train()
-  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 294, in train
-    X, Y = next(iterator)
-  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 435, in __next__
-    data = self._next_data()
-  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 475, in _next_data
-    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
-  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 47, in fetch
-    return self.collate_fn(data)
-  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 83, in default_collate
-    return [default_collate(samples) for samples in transposed]
-  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 83, in <listcomp>
-    return [default_collate(samples) for samples in transposed]
-  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 85, in default_collate
-    raise TypeError(default_collate_err_msg_format.format(elem_type))
-TypeError: default_collate: batch must contain tensors, numpy arrays, numbers, dicts or lists; found <class 'NoneType'>
-Tuple:(<torch.utils.data.dataloader.DataLoader object at 0x7f34522d6df0>,)
-Iterator<tuple_iterator object at 0x7f3452040bb0>
+  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 334, in train
+    x1_outs = net(all_img1, head=head)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/parallel/data_parallel.py", line 161, in forward
+    outputs = self.parallel_apply(replicas, inputs, kwargs)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/parallel/data_parallel.py", line 171, in parallel_apply
+    return parallel_apply(replicas, inputs, kwargs, self.device_ids[:len(replicas)])
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/parallel/parallel_apply.py", line 86, in parallel_apply
+    output.reraise()
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/_utils.py", line 428, in reraise
+    raise self.exc_type(msg)
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/parallel/parallel_apply.py", line 61, in _worker
+    output = module(*input, **kwargs)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/mnt/storage2/METRO_recycling/IIC/code/archs/segmentation/net10a_twohead.py", line 23, in forward
+    x = self.trunk(x)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/mnt/storage2/METRO_recycling/IIC/code/archs/segmentation/net10a.py", line 30, in forward
+    x = self.features(x)  # do not flatten
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/container.py", line 117, in forward
+    input = module(input)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/conv.py", line 423, in forward
+    return self._conv_forward(input, self.weight)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/conv.py", line 419, in _conv_forward
+    return F.conv2d(input, weight, self.bias, self.stride,
+RuntimeError: CUDA out of memory. Tried to allocate 1.56 GiB (GPU 0; 10.73 GiB total capacity; 9.59 GiB already allocated; 231.56 MiB free; 9.59 GiB reserved in total by PyTorch)
+
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/cardboard_GH010258image-027.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010377image-019.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010204image-056.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010204image-056.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/cardboard_GH010261image-026.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/metal_cans_GH010244image-039.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010211image-025.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bags_GH010292image-040.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010374image-059.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010390image-006.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bags_GH010317image-089.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010388image-041.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010390image-042.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010209image-012.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010412image-036.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010389image-028.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010207image-036.png
+Image size: (576, 576, 3)
+file path: /mnt/storage3/METRO_recycling/small_johns_images_for_IIC/plastic_bags_GH010293image-056.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010352image-056.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010352image-056.png
+Image size: (576, 576, 3)
+Batch exammple size: torch.Size([20, 4, 576, 576])
+x1.size: torch.Size([20, 5, 576, 576])
+x2 size: torch.Size([20, 5, 576, 576])

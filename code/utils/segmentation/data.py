@@ -101,19 +101,17 @@ def _create_dataloaders(config, dataset_class):
            "split": train_partition,
            "purpose": "train"}  # return training tuples, not including labels
       )
+      print("Test img" + str(len(train_imgs_curr)))
       if config.use_doersch_datasets:
         train_imgs_curr = DoerschDataset(config, train_imgs_curr)
 
       train_imgs_list.append(train_imgs_curr)
-    print("Train Images List: " + str(train_imgs_list))
     train_imgs = ConcatDataset(train_imgs_list)
-    print("Train Images: " + str(train_imgs))
     train_dataloader = torch.utils.data.DataLoader(train_imgs,
                                                    batch_size=config.dataloader_batch_sz,
                                                    shuffle=do_shuffle,
                                                    num_workers=0,
                                                    drop_last=False)
-
     if d_i > 0:
       assert (len(train_dataloader) == len(dataloaders[d_i - 1]))
 

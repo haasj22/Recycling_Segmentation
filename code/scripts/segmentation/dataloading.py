@@ -20,23 +20,25 @@ class _RecyclingDataset(_Coco):
         self._set_files()
 
     def _set_files(self):
-        file_list = [filename for filename in os.listdir(self.root + "/john_images_for_IIC")]
+        file_list = [filename for filename in os.listdir(self.root + "/small_johns_images_for_IIC")]
         self.files = file_list
 
     def _load_data(self, image_id):
-        image_path = str(self.root) + "/john_images_for_IIC/" + str(image_id)
+        image_path = str(self.root) + "/small_johns_images_for_IIC/" + str(image_id)
+        print("file path: " + str(image_path))
         image = cv2.imread(image_path).astype(np.uint8)
+        print("Image size: " + str(image.shape))
 
         label = np.array([[[-1]]])
         return image, label
 
+"""
 def create_Recycling_Dataloaders(config):
     DATA_DIR = "/mnt/storage2/METRO_recycling/imgds.npy"
     X_train = np.load(DATA_DIR)
     print(f"Shape of training data: {X_train.shape}")
     print(f"Data type: {type(X_train)}")
     
-    """
     all_partitions = X_train
     img_list = []
     for partition in all_partitions:
@@ -46,8 +48,7 @@ def create_Recycling_Dataloaders(config):
                     "purpose": "test"}
                 
         )
-        img_list +=img_curr
-    """
+        img_list +=im
     recycling_dataset = ConcatDataset(X_train)
     dataloaders = []
     
@@ -66,3 +67,4 @@ def create_Recycling_Dataloaders(config):
         dataloaders.append(train_dataloader)
 
     return dataloaders, dataloaders, dataloaders
+    """
