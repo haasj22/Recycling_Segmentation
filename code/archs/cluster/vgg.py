@@ -1,5 +1,5 @@
 import torch.nn as nn
-
+import GPUtil
 
 class VGGTrunk(nn.Module):
   def __init__(self):
@@ -10,6 +10,8 @@ class VGGTrunk(nn.Module):
     in_channels = self.in_channels
     for tup in self.cfg:
       assert (len(tup) == 2)
+      print("adding cluster layer")
+      GPUtil.showUtilization()
 
       out, dilation = tup
       sz = self.conv_size

@@ -5,6 +5,7 @@ import itertools
 import pickle
 import sys
 from datetime import datetime
+import gc
 
 import matplotlib
 import numpy as np
@@ -331,10 +332,13 @@ def train():
 
         print("x1.size: " + str(all_img1.shape))
         print("x2 size: " + str(all_img2.shape))
+       
+        gc.collect()
+        #torch.cuda.set_device(0)
         x1_outs = net(all_img1, head=head)
-        torch.cuda.empty_cache()
+        #torch.cude.set_device(1)
         x2_outs = net(all_img2, head=head)
-        torch.cuda.empty_cache()
+        #torch.cude.set_device(0)
 
         avg_loss_batch = None  # avg over the heads
         avg_loss_no_lamb_batch = None

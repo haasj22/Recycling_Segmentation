@@ -101,7 +101,6 @@ def _create_dataloaders(config, dataset_class):
            "split": train_partition,
            "purpose": "train"}  # return training tuples, not including labels
       )
-      print("Test img" + str(len(train_imgs_curr)))
       if config.use_doersch_datasets:
         train_imgs_curr = DoerschDataset(config, train_imgs_curr)
 
@@ -118,8 +117,6 @@ def _create_dataloaders(config, dataset_class):
     dataloaders.append(train_dataloader)
 
   num_train_batches = len(dataloaders[0])
-  print("Length of paired datasets vector %d" % len(dataloaders))
-  print("Number of batches per epoch: %d" % num_train_batches)
   sys.stdout.flush()
 
   return dataloaders

@@ -33,8 +33,8 @@ head_B_first: False
 batchnorm_track: True
 no_sobel: False
 include_rgb: True
-pre_scale_all: False
-pre_scale_factor: 0.5
+pre_scale_all: True
+pre_scale_factor: 0.25
 input_sz: 576
 use_random_scale: False
 scale_min: 0.6
@@ -65,13 +65,44 @@ eval_mode: hung
 in_channels: 5
 using_IR: False
 ----------
-Creating paired dataloader 0 out of 1 time 2021-04-08 17:31:06.301804
-Test img119
-Test img119
-Length of paired datasets vector 1
-Number of batches per epoch: 12
+Creating paired dataloader 0 out of 1 time 2021-04-14 15:50:15.944757
+adding cluster layer
+| ID | GPU | MEM |
+------------------
+|  0 |  1% |  0% |
+|  1 |  0% |  0% |
+adding cluster layer
+| ID | GPU | MEM |
+------------------
+|  0 |  1% |  0% |
+|  1 |  0% |  0% |
+adding cluster layer
+| ID | GPU | MEM |
+------------------
+|  0 |  1% |  0% |
+|  1 |  0% |  0% |
+adding cluster layer
+| ID | GPU | MEM |
+------------------
+|  0 |  1% |  0% |
+|  1 |  0% |  0% |
+adding cluster layer
+| ID | GPU | MEM |
+------------------
+|  0 |  1% |  0% |
+|  1 |  0% |  0% |
+adding cluster layer
+| ID | GPU | MEM |
+------------------
+|  0 |  1% |  0% |
+|  1 |  0% |  0% |
+adding cluster layer
+| ID | GPU | MEM |
+------------------
+|  0 |  1% |  0% |
+|  1 |  0% |  0% |
 using uncollapsed loss!
-Starting e_i: 1 2021-04-08 17:31:12.349925
+Starting e_i: 1 2021-04-14 15:50:39.279265
 /mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:18: FutureWarning: The linear_assignment_ module is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
   warnings.warn(
 Traceback (most recent call last):
@@ -79,9 +110,9 @@ Traceback (most recent call last):
     mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
   File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/runpy.py", line 111, in _get_module_details
     __import__(pkg_name)
-  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 473, in <module>
+  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 477, in <module>
     train()
-  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 334, in train
+  File "/mnt/storage2/METRO_recycling/IIC/code/scripts/segmentation/segmentation_twohead2.py", line 338, in train
     x1_outs = net(all_img1, head=head)
   File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
     result = self.forward(*input, **kwargs)
@@ -99,7 +130,7 @@ Original Traceback (most recent call last):
     output = module(*input, **kwargs)
   File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
     result = self.forward(*input, **kwargs)
-  File "/mnt/storage2/METRO_recycling/IIC/code/archs/segmentation/net10a_twohead.py", line 23, in forward
+  File "/mnt/storage2/METRO_recycling/IIC/code/archs/segmentation/net10a_twohead.py", line 26, in forward
     x = self.trunk(x)
   File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
     result = self.forward(*input, **kwargs)
@@ -117,46 +148,56 @@ Original Traceback (most recent call last):
     return F.conv2d(input, weight, self.bias, self.stride,
 RuntimeError: CUDA out of memory. Tried to allocate 1.56 GiB (GPU 0; 10.73 GiB total capacity; 9.59 GiB already allocated; 231.56 MiB free; 9.59 GiB reserved in total by PyTorch)
 
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010388image-034.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/metal_cans_GH010250image-042.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010216image-036.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010374image-057.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010217image-053.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010395image-048.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010392image-031.png
+Image size: (576, 576, 3)
 file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/cardboard_GH010258image-027.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010377image-019.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010204image-056.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010204image-056.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/cardboard_GH010261image-026.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/metal_cans_GH010244image-039.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010211image-025.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bags_GH010292image-040.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010374image-059.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010390image-006.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bags_GH010317image-089.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010388image-041.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010390image-042.png
-Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010209image-012.png
 Image size: (576, 576, 3)
 file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010412image-036.png
 Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010389image-028.png
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/cardboard_GH010261image-026.png
 Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010207image-036.png
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/cardboard_GH010262image-089.png
 Image size: (576, 576, 3)
-file path: /mnt/storage3/METRO_recycling/small_johns_images_for_IIC/plastic_bags_GH010293image-056.png
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bags_GH010314image-054.png
 Image size: (576, 576, 3)
-file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010352image-056.png
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010210image-031.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010216image-034.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010390image-006.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/plastic_bottles_GH010217image-024.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010360image-053.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010377image-029.png
+Image size: (576, 576, 3)
+file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/assorted_GH010388image-045.png
 Image size: (576, 576, 3)
 file path: /mnt/storage2/METRO_recycling/small_johns_images_for_IIC/paper_GH010352image-056.png
 Image size: (576, 576, 3)
 Batch exammple size: torch.Size([20, 4, 576, 576])
 x1.size: torch.Size([20, 5, 576, 576])
 x2 size: torch.Size([20, 5, 576, 576])
+First GPU looksie
+First GPU looksie
+| ID | GPU | MEM |
+------------------
+|  0 |  0% | 19% |
+|  1 |  4% |  9% |
+| ID | GPU | MEM |
+------------------
+|  0 | 10% | 96% |
+|  1 |  4% |  9% |
