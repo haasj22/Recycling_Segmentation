@@ -43,6 +43,8 @@ class VGGNet(nn.Module):
 
   def _initialize_weights(self, mode='fan_in'):
     for m in self.modules():
+      print("GPU pre module")
+      GPUtil.showUtilization()
       if isinstance(m, nn.Conv2d):
         nn.init.kaiming_normal_(m.weight, mode=mode, nonlinearity='relu')
         if m.bias is not None:

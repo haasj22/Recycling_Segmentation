@@ -26,11 +26,21 @@ class SegmentationNet10aTwoHead(VGGNet):
     x = self.trunk(x)
     print("Post trunk looksie")
     GPUtil.showUtilization()
+    print("Trunk x: " + str(x))
     if head == "A":
+      print("Pre GPU head A")
+      GPUtil.showUtilization()
       x = self.head_A(x)
+      print("Post GPU head A")
+      GPUtil.showUtilization()
     elif head == "B":
+      print("Pre GPU head B")
+      GPUtil.showUtilization()
       x = self.head_B(x)
+      print("Post GPU head B")
+      GPUtil.showUtilization()
     else:
       assert (False)
-
+    
+    print("Final x in head forward: " + str(x))
     return x

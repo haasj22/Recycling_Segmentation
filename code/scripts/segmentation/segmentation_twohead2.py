@@ -26,6 +26,8 @@ from IIC.code.utils.segmentation.IID_losses import IID_segmentation_loss, \
 from IIC.code.utils.segmentation.data import segmentation_create_dataloaders
 from IIC.code.utils.segmentation.general import set_segmentation_input_channels
 from IIC.code.scripts.segmentation.new_dataloading import create_basic_clustering_dataloaders
+
+import pdb
 """
   Fully unsupervised clustering for segmentation ("IIC" = "IID").
   Train and test script.
@@ -289,7 +291,7 @@ def train():
 
         #iterator = iter(tup)
         print("Batch exammple size: " + str(tup[0][0].shape))
-        curr_batch_sz = 20  #hard_coded to get working
+        curr_batch_sz = 1  #hard_coded to get working
         for d_i in range(config.num_dataloaders):
           #img1 = [[]]
           #img2 = [[]]
@@ -335,6 +337,7 @@ def train():
        
         gc.collect()
         #torch.cuda.set_device(0)
+        pdb.set_trace()
         x1_outs = net(all_img1, head=head)
         #torch.cude.set_device(1)
         x2_outs = net(all_img2, head=head)

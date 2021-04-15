@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
+import GPUtil
 
 from IIC.code.archs.cluster.vgg import VGGTrunk, VGGNet
 
@@ -27,7 +28,11 @@ class SegmentationNet10aTrunk(VGGTrunk):
     self.features = self._make_layers()
 
   def forward(self, x):
+    print("Net10a GPU")
+    GPUtil.showUtilization()
+    print("Net10a pre assigned x: " + str(x))
     x = self.features(x)  # do not flatten
+    print("Net10a post assigned x: " + str(x))
     return x
 
 
@@ -52,6 +57,8 @@ class SegmentationNet10aHead(nn.Module):
   def forward(self, x):
     results = []
     for i in range(self.num_sub_heads):
+      print("GPU pre head forward")
+      GPUtil.showUtilization()
       x_i = self.heads[i](x)
       x_i = F.interpolate(x_i, size=self.input_sz, mode="bilinear")
       results.append(x_i)

@@ -13,7 +13,14 @@
     print("IN")
   File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/bdb.py", line 88, in trace_dispatch
     return self.dispatch_line(frame)
-  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/bdb.py", line 113, in dispatch_line
-    if self.quitting: raise BdbQuit
-bdb.BdbQuit
-
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/bdb.py", line 112, in dispatch_line
+    self.user_line(frame)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/pdb.py", line 262, in user_line
+    self.interaction(frame, None)
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/pdb.py", line 357, in interaction
+    self._cmdloop()
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/pdb.py", line 322, in _cmdloop
+    self.cmdloop()
+  File "/mnt/storage2/METRO_recycling/anaconda3/envs/research_seg/lib/python3.8/cmd.py", line 126, in cmdloop
+    line = input(self.prompt)
+OSError: [Errno 9] Bad file descriptor
